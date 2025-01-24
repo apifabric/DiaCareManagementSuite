@@ -1,0 +1,242 @@
+about:
+  date: January 24, 2025 22:16:30
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 7
+  number_tables: 8
+info_toggle_checked: true
+resources:
+  BloodGlucoseReading:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: patient_id
+    - name: reading_date
+      type: DATE
+    - name: glucose_value
+    description: Model representing daily blood glucose readings for patients.
+    info_list: Model representing daily blood glucose readings for patients.
+    tab_groups:
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: BloodGlucoseReading
+    user_key: id
+  Comorbidity:
+    attributes:
+    - label: ' disease_name*'
+      name: disease_name
+      search: true
+      sort: true
+    - name: patient_id
+    - name: id
+    description: Model representing comorbidities associated with the patient.
+    info_list: Model representing comorbidities associated with the patient.
+    tab_groups:
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: Comorbidity
+    user_key: disease_name
+  LabResult:
+    attributes:
+    - label: ' test_name*'
+      name: test_name
+      search: true
+      sort: true
+    - name: patient_id
+    - name: test_date
+      type: DATE
+    - name: result_value
+    - name: unit
+    - name: id
+    description: Model representing lab test results for patients.
+    info_list: Model representing lab test results for patients.
+    tab_groups:
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: LabResult
+    user_key: test_name
+  LifestyleActivity:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: patient_id
+    - name: activity
+    - name: duration_minutes
+    - name: date_logged
+      type: DATE
+    description: Model representing lifestyle activities of a patient.
+    info_list: Model representing lifestyle activities of a patient.
+    tab_groups:
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: LifestyleActivity
+    user_key: id
+  Medication:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: typical_dosage
+    - name: description
+    - name: id
+    description: Model representing typical diabetes medications.
+    info_list: Model representing typical diabetes medications.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - medication_id
+      name: PatientMedicationList
+      resource: PatientMedication
+    type: Medication
+    user_key: name
+  Patient:
+    attributes:
+    - label: ' first_name*'
+      name: first_name
+      search: true
+      sort: true
+    - name: last_name
+    - name: date_of_birth
+      type: DATE
+    - name: gender
+    - name: weight
+    - name: height
+    - name: created_at
+      type: DATETIME
+    - name: updated_at
+      type: DATETIME
+    - name: id
+    description: Model representing patient details.
+    info_list: Model representing patient details.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - patient_id
+      name: BloodGlucoseReadingList
+      resource: BloodGlucoseReading
+    - direction: tomany
+      fks:
+      - patient_id
+      name: ComorbidityList
+      resource: Comorbidity
+    - direction: tomany
+      fks:
+      - patient_id
+      name: LabResultList
+      resource: LabResult
+    - direction: tomany
+      fks:
+      - patient_id
+      name: LifestyleActivityList
+      resource: LifestyleActivity
+    - direction: tomany
+      fks:
+      - patient_id
+      name: PatientMedicationList
+      resource: PatientMedication
+    - direction: tomany
+      fks:
+      - patient_id
+      name: TreatmentPlanList
+      resource: TreatmentPlan
+    type: Patient
+    user_key: first_name
+  PatientMedication:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: medication_id
+    - name: patient_id
+    - name: taken_dosage
+    - name: start_date
+      type: DATE
+    - name: end_date
+      type: DATE
+    description: Link table to map patients to their prescribed medications.
+    info_list: Link table to map patients to their prescribed medications.
+    tab_groups:
+    - direction: toone
+      fks:
+      - medication_id
+      name: medication
+      resource: Medication
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: PatientMedication
+    user_key: id
+  TreatmentPlan:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: patient_id
+    - name: plan_details
+    - name: created_at
+      type: DATETIME
+    description: Model representing the treatment plan outlined for the patient.
+    info_list: Model representing the treatment plan outlined for the patient.
+    tab_groups:
+    - direction: toone
+      fks:
+      - patient_id
+      name: patient
+      resource: Patient
+    type: TreatmentPlan
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

@@ -1,0 +1,186 @@
+{
+    "models": [
+        {
+            "classname": "Patient",
+            "code": "class Patient(Base):\n    __tablename__ = 'patients'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    first_name = Column(String)\n    last_name = Column(String)\n    date_of_birth = Column(Date)\n    gender = Column(String)\n    weight = Column(Float)\n    height = Column(Float)\n    created_at = Column(DateTime, default=datetime.utcnow)\n    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)",
+            "description": "Model representing patient details.",
+            "name": "Patient"
+        },
+        {
+            "classname": "Medication",
+            "code": "class Medication(Base):\n    __tablename__ = 'medications'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String)\n    typical_dosage = Column(String)\n    description = Column(String)",
+            "description": "Model representing typical diabetes medications.",
+            "name": "Medication"
+        },
+        {
+            "classname": "PatientMedication",
+            "code": "class PatientMedication(Base):\n    __tablename__ = 'patient_medications'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    patient_id = Column(Integer, ForeignKey('patients.id'))\n    medication_id = Column(Integer, ForeignKey('medications.id'))\n    taken_dosage = Column(String)\n    start_date = Column(Date)\n    end_date = Column(Date)",
+            "description": "Link table to map patients to their prescribed medications.",
+            "name": "PatientMedication"
+        },
+        {
+            "classname": "LifestyleActivity",
+            "code": "class LifestyleActivity(Base):\n    __tablename__ = 'lifestyle_activities'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    patient_id = Column(Integer, ForeignKey('patients.id'))\n    activity = Column(String)\n    duration_minutes = Column(Integer)\n    date_logged = Column(Date)",
+            "description": "Model representing lifestyle activities of a patient.",
+            "name": "LifestyleActivity"
+        },
+        {
+            "classname": "LabResult",
+            "code": "class LabResult(Base):\n    __tablename__ = 'lab_results'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    patient_id = Column(Integer, ForeignKey('patients.id'))\n    test_date = Column(Date)\n    test_name = Column(String)\n    result_value = Column(Float)\n    unit = Column(String)",
+            "description": "Model representing lab test results for patients.",
+            "name": "LabResult"
+        },
+        {
+            "classname": "BloodGlucoseReading",
+            "code": "class BloodGlucoseReading(Base):\n    __tablename__ = 'blood_glucose_readings'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    patient_id = Column(Integer, ForeignKey('patients.id'))\n    reading_date = Column(Date)\n    glucose_value = Column(Float)",
+            "description": "Model representing daily blood glucose readings for patients.",
+            "name": "BloodGlucoseReading"
+        },
+        {
+            "classname": "Comorbidity",
+            "code": "class Comorbidity(Base):\n    __tablename__ = 'comorbidities'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    patient_id = Column(Integer, ForeignKey('patients.id'))\n    disease_name = Column(String)",
+            "description": "Model representing comorbidities associated with the patient.",
+            "name": "Comorbidity"
+        },
+        {
+            "classname": "TreatmentPlan",
+            "code": "class TreatmentPlan(Base):\n    __tablename__ = 'treatment_plans'\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    patient_id = Column(Integer, ForeignKey('patients.id'))\n    plan_details = Column(String)\n    created_at = Column(DateTime, default=datetime.utcnow)",
+            "description": "Model representing the treatment plan outlined for the patient.",
+            "name": "TreatmentPlan"
+        }
+    ],
+    "rules": [],
+    "test_data": "Four rows of test data for each model to simulate patient management, demographics, and clinical recordings.",
+    "test_data_rows": [
+        {
+            "test_data_row_variable": "patient1",
+            "code": "patient1 = Patient(first_name=\"John\", last_name=\"Doe\", date_of_birth=date(1970, 1, 1), gender=\"Male\", weight=85.5, height=175.0)"
+        },
+        {
+            "test_data_row_variable": "patient2",
+            "code": "patient2 = Patient(first_name=\"Jane\", last_name=\"Smith\", date_of_birth=date(1980, 5, 15), gender=\"Female\", weight=65.2, height=160.0)"
+        },
+        {
+            "test_data_row_variable": "patient3",
+            "code": "patient3 = Patient(first_name=\"Alice\", last_name=\"Tan\", date_of_birth=date(1990, 10, 20), gender=\"Female\", weight=75.4, height=165.0)"
+        },
+        {
+            "test_data_row_variable": "patient4",
+            "code": "patient4 = Patient(first_name=\"Bob\", last_name=\"Brown\", date_of_birth=date(1965, 12, 30), gender=\"Male\", weight=90.0, height=180.0)"
+        },
+        {
+            "test_data_row_variable": "medication1",
+            "code": "medication1 = Medication(name=\"Ozempic\", typical_dosage=\"0.5 mg once weekly\", description=\"Medication to improve blood sugar control.\")"
+        },
+        {
+            "test_data_row_variable": "medication2",
+            "code": "medication2 = Medication(name=\"Glargine\", typical_dosage=\"Long-acting insulin, dose based on blood sugar readings and doctor's recommendation.\", description=\"Used to lower blood glucose levels in adults with diabetes.\")"
+        },
+        {
+            "test_data_row_variable": "medication3",
+            "code": "medication3 = Medication(name=\"Metformin\", typical_dosage=\"500 mg twice daily\", description=\"Lowers glucose production in the liver.\")"
+        },
+        {
+            "test_data_row_variable": "medication4",
+            "code": "medication4 = Medication(name=\"Januvia\", typical_dosage=\"100 mg daily\", description=\"Dipeptidyl peptidase-4 (DPP-4) inhibitor that helps increase insulin levels.\")"
+        },
+        {
+            "test_data_row_variable": "patient_med1",
+            "code": "patient_med1 = PatientMedication(patient_id=1, medication_id=1, taken_dosage=\"0.5 mg\", start_date=date(2023, 1, 10), end_date=None)"
+        },
+        {
+            "test_data_row_variable": "patient_med2",
+            "code": "patient_med2 = PatientMedication(patient_id=2, medication_id=2, taken_dosage=\"10 units\", start_date=date(2023, 2, 5), end_date=None)"
+        },
+        {
+            "test_data_row_variable": "patient_med3",
+            "code": "patient_med3 = PatientMedication(patient_id=3, medication_id=3, taken_dosage=\"500 mg\", start_date=date(2023, 3, 15), end_date=date(2023, 4, 15))"
+        },
+        {
+            "test_data_row_variable": "patient_med4",
+            "code": "patient_med4 = PatientMedication(patient_id=4, medication_id=4, taken_dosage=\"100 mg\", start_date=date(2023, 4, 20), end_date=None)"
+        },
+        {
+            "test_data_row_variable": "activity1",
+            "code": "activity1 = LifestyleActivity(patient_id=1, activity=\"Walking\", duration_minutes=30, date_logged=date(2023, 5, 10))"
+        },
+        {
+            "test_data_row_variable": "activity2",
+            "code": "activity2 = LifestyleActivity(patient_id=2, activity=\"Cycling\", duration_minutes=45, date_logged=date(2023, 5, 12))"
+        },
+        {
+            "test_data_row_variable": "activity3",
+            "code": "activity3 = LifestyleActivity(patient_id=3, activity=\"Swimming\", duration_minutes=60, date_logged=date(2023, 5, 14))"
+        },
+        {
+            "test_data_row_variable": "activity4",
+            "code": "activity4 = LifestyleActivity(patient_id=4, activity=\"Yoga\", duration_minutes=40, date_logged=date(2023, 5, 16))"
+        },
+        {
+            "test_data_row_variable": "lab_result1",
+            "code": "lab_result1 = LabResult(patient_id=1, test_date=date(2023, 6, 1), test_name=\"HbA1c\", result_value=7.1, unit=\"%\")"
+        },
+        {
+            "test_data_row_variable": "lab_result2",
+            "code": "lab_result2 = LabResult(patient_id=2, test_date=date(2023, 6, 2), test_name=\"Fasting Glucose\", result_value=120.0, unit=\"mg/dL\")"
+        },
+        {
+            "test_data_row_variable": "lab_result3",
+            "code": "lab_result3 = LabResult(patient_id=3, test_date=date(2023, 6, 3), test_name=\"Lipid Panel\", result_value=200.0, unit=\"mg/dL\")"
+        },
+        {
+            "test_data_row_variable": "lab_result4",
+            "code": "lab_result4 = LabResult(patient_id=4, test_date=date(2023, 6, 4), test_name=\"Blood Pressure\", result_value=130.0, unit=\"mmHg\")"
+        },
+        {
+            "test_data_row_variable": "glucose_reading1",
+            "code": "glucose_reading1 = BloodGlucoseReading(patient_id=1, reading_date=date(2023, 7, 1), glucose_value=150.0)"
+        },
+        {
+            "test_data_row_variable": "glucose_reading2",
+            "code": "glucose_reading2 = BloodGlucoseReading(patient_id=2, reading_date=date(2023, 7, 2), glucose_value=155.0)"
+        },
+        {
+            "test_data_row_variable": "glucose_reading3",
+            "code": "glucose_reading3 = BloodGlucoseReading(patient_id=3, reading_date=date(2023, 7, 3), glucose_value=160.0)"
+        },
+        {
+            "test_data_row_variable": "glucose_reading4",
+            "code": "glucose_reading4 = BloodGlucoseReading(patient_id=4, reading_date=date(2023, 7, 4), glucose_value=165.0)"
+        },
+        {
+            "test_data_row_variable": "comorbidity1",
+            "code": "comorbidity1 = Comorbidity(patient_id=1, disease_name=\"Hypertension\")"
+        },
+        {
+            "test_data_row_variable": "comorbidity2",
+            "code": "comorbidity2 = Comorbidity(patient_id=2, disease_name=\"Dyslipidemia\")"
+        },
+        {
+            "test_data_row_variable": "comorbidity3",
+            "code": "comorbidity3 = Comorbidity(patient_id=3, disease_name=\"Obesity\")"
+        },
+        {
+            "test_data_row_variable": "comorbidity4",
+            "code": "comorbidity4 = Comorbidity(patient_id=4, disease_name=\"Sleep Apnea\")"
+        },
+        {
+            "test_data_row_variable": "treatment_plan1",
+            "code": "treatment_plan1 = TreatmentPlan(patient_id=1, plan_details=\"Increase Metformin dosage.\", created_at=datetime.utcnow())"
+        },
+        {
+            "test_data_row_variable": "treatment_plan2",
+            "code": "treatment_plan2 = TreatmentPlan(patient_id=2, plan_details=\"Include Glargine in regimen.\", created_at=datetime.utcnow())"
+        },
+        {
+            "test_data_row_variable": "treatment_plan3",
+            "code": "treatment_plan3 = TreatmentPlan(patient_id=3, plan_details=\"Add exercise and lifestyle changes.\", created_at=datetime.utcnow())"
+        },
+        {
+            "test_data_row_variable": "treatment_plan4",
+            "code": "treatment_plan4 = TreatmentPlan(patient_id=4, plan_details=\"Start insulin therapy.\", created_at=datetime.utcnow())"
+        }
+    ],
+    "test_data_sqlite": "INSERT INTO patients (first_name, last_name, date_of_birth, gender, weight, height) VALUES ('John', 'Doe', '1970-01-01', 'Male', 85.5, 175.0);\nINSERT INTO patients (first_name, last_name, date_of_birth, gender, weight, height) VALUES ('Jane', 'Smith', '1980-05-15', 'Female', 65.2, 160.0);\nINSERT INTO patients (first_name, last_name, date_of_birth, gender, weight, height) VALUES ('Alice', 'Tan', '1990-10-20', 'Female', 75.4, 165.0);\nINSERT INTO patients (first_name, last_name, date_of_birth, gender, weight, height) VALUES ('Bob', 'Brown', '1965-12-30', 'Male', 90.0, 180.0);\nINSERT INTO medications (name, typical_dosage, description) VALUES ('Ozempic', '0.5 mg once weekly', 'Medication to improve blood sugar control.');\nINSERT INTO medications (name, typical_dosage, description) VALUES ('Glargine', 'Long-acting insulin, dose based on blood sugar readings and doctor's recommendation.', 'Used to lower blood glucose levels in adults with diabetes.');\nINSERT INTO medications (name, typical_dosage, description) VALUES ('Metformin', '500 mg twice daily', 'Lowers glucose production in the liver.');\nINSERT INTO medications (name, typical_dosage, description) VALUES ('Januvia', '100 mg daily', 'Dipeptidyl peptidase-4 (DPP-4) inhibitor that helps increase insulin levels.');\nINSERT INTO patient_medications (patient_id, medication_id, taken_dosage, start_date) VALUES (1, 1, '0.5 mg', '2023-01-10');\nINSERT INTO patient_medications (patient_id, medication_id, taken_dosage, start_date) VALUES (2, 2, '10 units', '2023-02-05');\nINSERT INTO patient_medications (patient_id, medication_id, taken_dosage, start_date, end_date) VALUES (3, 3, '500 mg', '2023-03-15', '2023-04-15');\nINSERT INTO patient_medications (patient_id, medication_id, taken_dosage, start_date) VALUES (4, 4, '100 mg', '2023-04-20');\nINSERT INTO lifestyle_activities (patient_id, activity, duration_minutes, date_logged) VALUES (1, 'Walking', 30, '2023-05-10');\nINSERT INTO lifestyle_activities (patient_id, activity, duration_minutes, date_logged) VALUES (2, 'Cycling', 45, '2023-05-12');\nINSERT INTO lifestyle_activities (patient_id, activity, duration_minutes, date_logged) VALUES (3, 'Swimming', 60, '2023-05-14');\nINSERT INTO lifestyle_activities (patient_id, activity, duration_minutes, date_logged) VALUES (4, 'Yoga', 40, '2023-05-16');\nINSERT INTO lab_results (patient_id, test_date, test_name, result_value, unit) VALUES (1, '2023-06-01', 'HbA1c', 7.1, '%');\nINSERT INTO lab_results (patient_id, test_date, test_name, result_value, unit) VALUES (2, '2023-06-02', 'Fasting Glucose', 120.0, 'mg/dL');\nINSERT INTO lab_results (patient_id, test_date, test_name, result_value, unit) VALUES (3, '2023-06-03', 'Lipid Panel', 200.0, 'mg/dL');\nINSERT INTO lab_results (patient_id, test_date, test_name, result_value, unit) VALUES (4, '2023-06-04', 'Blood Pressure', 130.0, 'mmHg');\nINSERT INTO blood_glucose_readings (patient_id, reading_date, glucose_value) VALUES (1, '2023-07-01', 150.0);\nINSERT INTO blood_glucose_readings (patient_id, reading_date, glucose_value) VALUES (2, '2023-07-02', 155.0);\nINSERT INTO blood_glucose_readings (patient_id, reading_date, glucose_value) VALUES (3, '2023-07-03', 160.0);\nINSERT INTO blood_glucose_readings (patient_id, reading_date, glucose_value) VALUES (4, '2023-07-04', 165.0);\nINSERT INTO comorbidities (patient_id, disease_name) VALUES (1, 'Hypertension');\nINSERT INTO comorbidities (patient_id, disease_name) VALUES (2, 'Dyslipidemia');\nINSERT INTO comorbidities (patient_id, disease_name) VALUES (3, 'Obesity');\nINSERT INTO comorbidities (patient_id, disease_name) VALUES (4, 'Sleep Apnea');\nINSERT INTO treatment_plans (patient_id, plan_details, created_at) VALUES (1, 'Increase Metformin dosage.', '2023-07-01');\nINSERT INTO treatment_plans (patient_id, plan_details, created_at) VALUES (2, 'Include Glargine in regimen.', '2023-07-01');\nINSERT INTO treatment_plans (patient_id, plan_details, created_at) VALUES (3, 'Add exercise and lifestyle changes.', '2023-07-01');\nINSERT INTO treatment_plans (patient_id, plan_details, created_at) VALUES (4, 'Start insulin therapy.', '2023-07-01');",
+    "name": "DiaCareManagementSuite"
+}

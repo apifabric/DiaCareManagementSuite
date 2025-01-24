@@ -1,0 +1,92 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+// Or, view in VSCode with extension: "DBML Live Preview"
+
+Project DBML {
+  Note: '''
+BloodGlucoseReading: Model representing daily blood glucose readings for patients.
+Patient: Model representing patient details.
+Comorbidity: Model representing comorbidities associated with the patient.
+LabResult: Model representing lab test results for patients.
+LifestyleActivity: Model representing lifestyle activities of a patient.
+Medication: Model representing typical diabetes medications.
+PatientMedication: Link table to map patients to their prescribed medications.
+TreatmentPlan: Model representing the treatment plan outlined for the patient.
+'''
+}
+
+Table BloodGlucoseReading {
+    id INTEGER [primary key]
+    patient_id INTEGER 
+    reading_date DATE 
+    glucose_value FLOAT 
+    }
+
+Table Patient {
+    id INTEGER [primary key]
+    first_name VARCHAR 
+    last_name VARCHAR 
+    date_of_birth DATE 
+    gender VARCHAR 
+    weight FLOAT 
+    height FLOAT 
+    created_at DATETIME 
+    updated_at DATETIME 
+    }
+
+Table Comorbidity {
+    id INTEGER [primary key]
+    patient_id INTEGER 
+    disease_name VARCHAR 
+    }
+
+Table LabResult {
+    id INTEGER [primary key]
+    patient_id INTEGER 
+    test_date DATE 
+    test_name VARCHAR 
+    result_value FLOAT 
+    unit VARCHAR 
+    }
+
+Table LifestyleActivity {
+    id INTEGER [primary key]
+    patient_id INTEGER 
+    activity VARCHAR 
+    duration_minutes INTEGER 
+    date_logged DATE 
+    }
+
+Table Medication {
+    id INTEGER [primary key]
+    name VARCHAR 
+    typical_dosage VARCHAR 
+    description VARCHAR 
+    }
+
+Table PatientMedication {
+    id INTEGER [primary key]
+    patient_id INTEGER 
+    medication_id INTEGER 
+    taken_dosage VARCHAR 
+    start_date DATE 
+    end_date DATE 
+    }
+
+Table TreatmentPlan {
+    id INTEGER [primary key]
+    patient_id INTEGER 
+    plan_details VARCHAR 
+    created_at DATETIME 
+    }
+
+
+
+// Relationships
+    Ref: BloodGlucoseReading.(patient_id) < Patient.(id)
+    Ref: Comorbidity.(patient_id) < Patient.(id)
+    Ref: LabResult.(patient_id) < Patient.(id)
+    Ref: LifestyleActivity.(patient_id) < Patient.(id)
+    Ref: PatientMedication.(medication_id) < Medication.(id)
+    Ref: PatientMedication.(patient_id) < Patient.(id)
+    Ref: TreatmentPlan.(patient_id) < Patient.(id)

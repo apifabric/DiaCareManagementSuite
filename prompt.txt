@@ -1,0 +1,3 @@
+ create an application to assist an Endocrinologist in prescribing medication to a diabetic patient.  the system should have a section for each patient where the doctor can store demographics, history of medications, lifestyle and daily activity, lab results, daily blood glucose reading, and comorbidities.  also it should have a section with the typical medications for a diabetic patient, such as ozempic and glargine and metformin.  the system should have standard dosages for each drug based on weight and health of the patient. also, there should be a record where the doctor presents a treatment plan for the patient.
+.
+Create at least 12 tables (models)
