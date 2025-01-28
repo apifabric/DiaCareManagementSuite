@@ -1,0 +1,37 @@
+{
+    "rules": [],
+    "models": [
+        {
+            "classname": "Medication",
+            "code": "class Medication(Base):  # type: ignore\n    \"\"\"\n    description: Model representing typical diabetes medications.\n    \"\"\"\n    __tablename__ = 'medications'\n    _s_collection_name = 'Medication'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    name = Column(String)\n    typical_dosage = Column(String)\n    description = Column(String)\n\n    # parent relationships (access parent)\n\n    # child relationships (access children)\n    PatientMedicationList : Mapped[List[\"PatientMedication\"]] = relationship(back_populates=\"medication\")"
+        },
+        {
+            "classname": "Patient",
+            "code": "class Patient(Base):  # type: ignore\n    \"\"\"\n    description: Model representing patient details.\n    \"\"\"\n    __tablename__ = 'patients'\n    _s_collection_name = 'Patient'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    first_name = Column(String)\n    last_name = Column(String)\n    date_of_birth = Column(Date)\n    gender = Column(String)\n    weight = Column(Float)\n    height = Column(Float)\n    created_at = Column(DateTime)\n    updated_at = Column(DateTime)\n\n    # parent relationships (access parent)\n\n    # child relationships (access children)\n    BloodGlucoseReadingList : Mapped[List[\"BloodGlucoseReading\"]] = relationship(back_populates=\"patient\")\n    ComorbidityList : Mapped[List[\"Comorbidity\"]] = relationship(back_populates=\"patient\")\n    LabResultList : Mapped[List[\"LabResult\"]] = relationship(back_populates=\"patient\")\n    LifestyleActivityList : Mapped[List[\"LifestyleActivity\"]] = relationship(back_populates=\"patient\")\n    PatientMedicationList : Mapped[List[\"PatientMedication\"]] = relationship(back_populates=\"patient\")\n    TreatmentPlanList : Mapped[List[\"TreatmentPlan\"]] = relationship(back_populates=\"patient\")"
+        },
+        {
+            "classname": "BloodGlucoseReading",
+            "code": "class BloodGlucoseReading(Base):  # type: ignore\n    \"\"\"\n    description: Model representing daily blood glucose readings for patients.\n    \"\"\"\n    __tablename__ = 'blood_glucose_readings'\n    _s_collection_name = 'BloodGlucoseReading'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    patient_id = Column(ForeignKey('patients.id'))\n    reading_date = Column(Date)\n    glucose_value = Column(Float)\n\n    # parent relationships (access parent)\n    patient : Mapped[\"Patient\"] = relationship(back_populates=(\"BloodGlucoseReadingList\"))"
+        },
+        {
+            "classname": "Comorbidity",
+            "code": "class Comorbidity(Base):  # type: ignore\n    \"\"\"\n    description: Model representing comorbidities associated with the patient.\n    \"\"\"\n    __tablename__ = 'comorbidities'\n    _s_collection_name = 'Comorbidity'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    patient_id = Column(ForeignKey('patients.id'))\n    disease_name = Column(String)\n\n    # parent relationships (access parent)\n    patient : Mapped[\"Patient\"] = relationship(back_populates=(\"ComorbidityList\"))"
+        },
+        {
+            "classname": "LabResult",
+            "code": "class LabResult(Base):  # type: ignore\n    \"\"\"\n    description: Model representing lab test results for patients.\n    \"\"\"\n    __tablename__ = 'lab_results'\n    _s_collection_name = 'LabResult'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    patient_id = Column(ForeignKey('patients.id'))\n    test_date = Column(Date)\n    test_name = Column(String)\n    result_value = Column(Float)\n    unit = Column(String)\n\n    # parent relationships (access parent)\n    patient : Mapped[\"Patient\"] = relationship(back_populates=(\"LabResultList\"))"
+        },
+        {
+            "classname": "LifestyleActivity",
+            "code": "class LifestyleActivity(Base):  # type: ignore\n    \"\"\"\n    description: Model representing lifestyle activities of a patient.\n    \"\"\"\n    __tablename__ = 'lifestyle_activities'\n    _s_collection_name = 'LifestyleActivity'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    patient_id = Column(ForeignKey('patients.id'))\n    activity = Column(String)\n    duration_minutes = Column(Integer)\n    date_logged = Column(Date)\n\n    # parent relationships (access parent)\n    patient : Mapped[\"Patient\"] = relationship(back_populates=(\"LifestyleActivityList\"))"
+        },
+        {
+            "classname": "PatientMedication",
+            "code": "class PatientMedication(Base):  # type: ignore\n    \"\"\"\n    description: Link table to map patients to their prescribed medications.\n    \"\"\"\n    __tablename__ = 'patient_medications'\n    _s_collection_name = 'PatientMedication'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    patient_id = Column(ForeignKey('patients.id'))\n    medication_id = Column(ForeignKey('medications.id'))\n    taken_dosage = Column(String)\n    start_date = Column(Date)\n    end_date = Column(Date)\n\n    # parent relationships (access parent)\n    medication : Mapped[\"Medication\"] = relationship(back_populates=(\"PatientMedicationList\"))\n    patient : Mapped[\"Patient\"] = relationship(back_populates=(\"PatientMedicationList\"))"
+        },
+        {
+            "classname": "TreatmentPlan",
+            "code": "class TreatmentPlan(Base):  # type: ignore\n    \"\"\"\n    description: Model representing the treatment plan outlined for the patient.\n    \"\"\"\n    __tablename__ = 'treatment_plans'\n    _s_collection_name = 'TreatmentPlan'  # type: ignore\n\n    id = Column(Integer, primary_key=True)\n    patient_id = Column(ForeignKey('patients.id'))\n    plan_details = Column(String)\n    created_at = Column(DateTime)\n\n    # parent relationships (access parent)\n    patient : Mapped[\"Patient\"] = relationship(back_populates=(\"TreatmentPlanList\"))"
+        }
+    ]
+}
